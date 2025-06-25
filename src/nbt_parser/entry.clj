@@ -1,8 +1,9 @@
 (ns nbt-parser.entry
-  (:require [nbt-parser.parsers :refer [startNextTag]]
+  (:require [nbt-parser.parsers :refer [startNextTag parseRoot]]
             [nbt-parser.decomp :refer [loadCompressedNbtFile getFileBytes]]
             [nbt-parser.helpers :refer [getTimeStr]]
-            [cheshire.core :refer [generate-string]]))
+            [cheshire.core :refer [generate-string]])
+  (:import [java.nio ByteBuffer]))
 
 ;; Ideas
 ;; Stream input vs byte array
@@ -36,8 +37,12 @@
 
 (def testfile (into [] (getFileBytes "D:\\testplayerdatadecomp.dat")))
 (def testfilecomp (into [] (loadCompressedNbtFile "D:\\testplayerdata.dat")))
-#_(startNextTag teststrnameremoved "main")
+(startNextTag teststrnameremoved "main")
 #_(startNextTag testfile "main")
+
+(parseRoot (ByteBuffer/wrap (byte-array teststrnameremoved)))
+
+(comment *e)
 
 
 #_(defn parseTagBCK [bytes payload parentStack tagTree remainingList]
@@ -68,6 +73,9 @@
 
 "Hello entry file"
 
-(defn runSample [opts] (startNextTag testfilecomp "main"))
+#_(defn runSample [opts] (startNextTag testfilecomp "main"))
 
-(spit (str "D:\\clojureout"(getTimeStr)".json") (generate-string (runSample {}) {:pretty true}))
+(defn runSampleTwo [opts] (parseRoot (ByteBuffer/wrap (byte-array testfilecomp))))
+
+(spit (str "D:\\clojureout"(getTimeStr)".json") (generate-string (runSampleTwo {}) {:pretty true}))
+
