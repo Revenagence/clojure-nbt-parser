@@ -34,9 +34,3 @@
 
 ;(gunzip2 "D:\\testplayerdata.dat" "D:\\testoutput.dat")
 
-
-#_(-> (gunzip "D:\\testplayerdata.dat"
-              (java.io.ByteArrayOutputStream.))
-      (.toByteArray)
-      (first))
-

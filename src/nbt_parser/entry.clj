@@ -4,6 +4,9 @@
             [nbt-parser.helpers :refer [getTimeStr]]
             [cheshire.core :refer [generate-string]]))
 
+;; Ideas
+;; Stream input vs byte array
+
 ;; "D:\\testplayerdatadecomp.dat"
 
 ;; TEST TAG CONTENTS

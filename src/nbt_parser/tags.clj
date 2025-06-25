@@ -107,26 +107,6 @@
      counterMap
      6)))
 
-#_(defn parseTagByteArray
-    "Represents an Tag containing a list of byte tags
-   Payload consists of a 4 byte integer size `x`,
-   and is then proceeded by `x` byte tag payloads"
-    [bytes parentStack tagTree counterMap name]
-    (let [payloadSize (constructNumber (subvec bytes 0 4))]
-      (if (= payloadSize 0)
-        (startNextTag ;; If the list is empty, move on to the next tag
-         (subvec bytes 4)
-         parentStack ;; No need to add the list here since it will never see any children
-         (addToTree name (vector) tagTree parentStack (not= counterMap 0))
-         counterMap
-         7)
-        (parseTagByte ;; Trigger a tag byte call
-         (subvec bytes 4)
-         (conj parentStack name)
-         (addToTree name (vector) tagTree parentStack (not= counterMap 0))
-         payloadSize
-         ""))))
-
 (defn parseTagByteArray
   "Represents an Tag containing a list of byte tags
    Payload consists of a 4 byte integer size `x`,
@@ -154,28 +134,6 @@
      (addToTree name value tagTree parentStack (checkInList parentStack counterMap 8))
      counterMap
      8)))
-
-#_(defn parseTagList
-    "Represents an Tag containing a list of tags
-   Payload consists of single byte representing which type of tag
-   the list contains, a 4 byte integer size `x`,
-   and is then proceeded by `x` payloads of the indicated type"
-    [bytes parentStack tagTree counterMap name]
-    (let [payloadSize (constructNumber (subvec bytes 1 5))
-          payloadFunc (getTagFunc (get bytes 0))]
-      (if (= payloadSize 0)
-        (startNextTag ;; If the list is empty, move on to the next tag
-         (subvec bytes 5)
-         parentStack ;; No need to add the list here since it will never see any children
-         (addToTree name (vector) tagTree parentStack (not= counterMap 0))
-         counterMap
-         9)
-        (payloadFunc
-         (subvec bytes 5)
-         (conj parentStack name)
-         (addToTree name (vector) tagTree parentStack (not= counterMap 0))
-         payloadSize
-         ""))))
 
 (defn parseTagList
   "Represents an Tag containing a list of tags
@@ -210,26 +168,6 @@
    counterMap
    10))
 
-#_(defn parseTagIntArray
-    "Represents an Tag containing a list of int tags
-   Payload consists of a 4 byte integer size `x`,
-   and is then proceeded by `x` int tag payloads"
-    [bytes parentStack tagTree counterMap name]
-    (let [payloadSize (constructNumber (subvec bytes 0 4))]
-      (if (= payloadSize 0)
-        (startNextTag ;; If the list is empty, move on to the next tag
-         (subvec bytes 4)
-         parentStack ;; No need to add the list here since it will never see any children
-         (addToTree name (vector) tagTree parentStack (not= counterMap 0))
-         counterMap
-         11)
-        (parseTagInt ;; Trigger a tag int call
-         (subvec bytes 4)
-         (conj parentStack name)
-         (addToTree name (vector) tagTree parentStack (not= counterMap 0))
-         payloadSize
-         ""))))
-
 (defn parseTagIntArray
   "Represents an Tag containing a list of int tags
    Payload consists of a 4 byte integer size `x`,
@@ -243,26 +181,6 @@
      (addToTree name (vector) tagTree parentStack (checkInList parentStack counterMap 11))
      (setListCounter newParentStack counterMap payloadSize)
      3)))
-
-#_(defn parseTagLongArray
-    "Represents an Tag containing a list of long tags
-   Payload consists of a 4 byte integer size `x`,
-   and is then proceeded by `x` long tag payloads"
-    [bytes parentStack tagTree counterMap name]
-    (let [payloadSize (constructNumber (subvec bytes 0 4))]
-      (if (= payloadSize 0)
-        (startNextTag ;; If the list is empty, move on to the next tag
-         (subvec bytes 4)
-         parentStack ;; No need to add the list here since it will never see any children
-         (addToTree name (vector) tagTree parentStack (not= counterMap 0))
-         counterMap
-         12)
-        (parseTagLong ;; Trigger a tag long call
-         (subvec bytes 4)
-         (conj parentStack name)
-         (addToTree name (vector) tagTree parentStack (not= counterMap 0))
-         payloadSize
-         ""))))
 
 (defn parseTagLongArray
   "Represents an Tag containing a list of long tags

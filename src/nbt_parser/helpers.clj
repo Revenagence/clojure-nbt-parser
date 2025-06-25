@@ -113,23 +113,3 @@
     (if (> (count bytes) 1)
       (+ (bit-shift-left (peek bytes) (* 8 shiftAmount)) (constructNumber (pop bytes)))
       (peek bytes))))
-
-
-#_(defn isParent
-    "Is the given tag a parent capable of having child nodes? (List and Compound tags)"
-    [tagId]
-    (case tagId
-      9 true
-      10 true
-      11 true
-      12 true
-      false))
-
-#_(defn isPayload
-    "Should the given tag have its children marked as payloads? (List tags)"
-    [tagID]
-    (case tagID
-      9 true
-      11 true
-      12 true
-      false))
