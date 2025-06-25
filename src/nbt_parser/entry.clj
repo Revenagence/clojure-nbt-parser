@@ -1,5 +1,6 @@
 (ns nbt-parser.entry
-  (:require [nbt-parser.parsers :refer [startNextTag parseRoot]]
+  (:require [nbt-parser.parsers :refer [startNextTag]]
+            [nbt-parser.parserstwo :refer [parseRoot]]
             [nbt-parser.decomp :refer [loadCompressedNbtFile getFileBytes]]
             [nbt-parser.helpers :refer [getTimeStr]]
             [cheshire.core :refer [generate-string]])
